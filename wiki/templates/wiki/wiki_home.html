@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="https://purecss.io/combo/1.18.13?/css/layouts/marketing.css">
+{% endblock %}
+
+{% block body_class %}wiki-homepage{% endblock %}
+
+{% block content %}
+
+    <div class="header">
+        <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+            <a class="pure-menu-heading" href="">{{ page.logoname }}</a>
+
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item pure-menu-selected"><a href="{{ page.url }}" class="pure-menu-link" style="color:white">首页</a></li>
+				{% for item in page.toplinks.all %}
+					<li class="pure-menu-item"><a href="{{ item.link }}" class="pure-menu-link">{{ item.title }}</a></li>
+				{% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    {% image page.image original as image %}
+    <div class="splash-container" style="background-image: url({{ image.url }}); background-size:cover">
+        <div class="splash">
+            <h1 class="splash-head" style="color: black">{{ page.title }}</h1>
+            <p class="splash-subhead">
+            </p>
+            <p>
+                <form class="pure-form" action="/search">
+                    <input type="text" name="query" placeholder="请在此输入搜索内容...">
+                    <button type="submit" class="pure-button pure-button-primary">Get Started</button>
+                </form>
+            </p>
+        </div>
+    </div>
+	
+    <div class="content-wrapper">
+        <div class="content">
+            <h2 class="content-head is-center">{{ page.intro }}</h2>
+			<div class="pure-g">
+			
+			{% for item in page.little_intros.all %}
+                <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+				
+                    <h3 class="content-subhead">
+                        <i class="fa {{ item.fa_name }}"></i>
+                        {{ item.title }}
+                    </h3>
+                    <p> {{ item.caption }} </p>
+                </div>
+			{% endfor %}
+			
+			</div>
+        </div>
+		
+        <div class="l-box-lrg pure-g" style="height:20px">
+        </div>
+		
+		{% load wiki_tags %}
+		{% wikihome_footer %}
+		
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+
+{% endblock %}

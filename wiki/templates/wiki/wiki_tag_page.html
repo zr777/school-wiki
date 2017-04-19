@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-min.css">
+
+	<link rel="stylesheet" href="https://purecss.io/combo/1.18.13?/css/layouts/blog.css">
+{% endblock %}
+
+
+{% block content %}
+<div id="layout" class="pure-g">
+    <div class="sidebar pure-u-1 pure-u-md-1-4">
+        <div class="header">
+            <h1 class="brand-title">标签</h1>
+
+			<h2 class="brand-tagline"></h2>
+
+            <nav class="nav">
+                <ul class="nav-list">
+					{% for item in page.all_tags %}
+                    <li class="nav-item">
+                        <a class="pure-button" href="{{ item.url }}">{{ item }}</a>
+                    </li>
+					{% endfor %}  
+                </ul>
+				
+
+				
+            </nav>
+
+        </div>
+    </div>
+
+	<div class="content pure-u-1 pure-u-md-3-4">
+		
+        <div>
+            <!-- A wrapper for all the blog posts -->
+            <div class="posts">
+			
+				<h1 class="content-subhead">当前标签 - {{ tag }}</h1>
+			
+				<form class="pure-form pure-g" action="/search">
+				
+						<div class="pure-u-md-1-2 pure-u-1">
+							<input class="pure-input-1" type="text" name="query" placeholder="关键词搜索"
+							style="margin-bottom:0px;">
+						</div>
+						<div class="pure-u-md-1-2 pure-u-1">
+							<button type="submit" class="pure-input-1  pure-button button-secondary"
+							style="margin-top:0px;">Go</button>
+						</div>
+						<!-- <legend></legend> -->
+						
+				</form>
+			
+                <!-- A single blog post -->
+                <section class="post">
+					{% for page in wikipages %}
+                    <header class="post-header">
+
+                        <h2 class="post-title"><a href=" {{ page.url }} ">{{page.title}}</a></h2>
+
+                        <p class="post-meta">
+                            &nbsp; By {{ page.author }} 
+							 - {{ page.date }}
+							 
+							{% for item in page.get_tags %}
+							<a class="post-category post-category-design"
+							   style="background: {{ item.color }};"
+							   href="{{ item.url }}">{{ item }}</a>
+							{% endfor %}
+							
+                        </p>
+                    </header>
+					
+                    <div class="post-description" 
+						 style="border-left: 6px solid #1b98f8;
+								margin-top: 8px;
+								padding: 0.9em 1em;
+								border-top: 1px solid #ddd;
+								border-bottom: 1px solid #ddd;
+								letter-spacing: 0.1em;
+								text-rendering: optimizespeed;">
+                        {{ page.body | truncatewords_html:20 }}
+                    </div>
+					
+					<!-- <h3 class="content-subhead"></h3> -->
+					{% endfor %}
+					
+                </section>
+            
+			
+				<div class="footer" style="text-align:center;">
+					<form class="pure-form pure-g pure-group" action="/search">
+						<!-- <fieldset class=""> -->
+							<!-- <legend></legend> -->
+						<div class="pure-u-md-4-4 pure-u-1">
+							<input class="pure-input-1" type="text" name="query" placeholder="关键词搜索">
+						</div>
+						<div class="pure-u-md-4-4 pure-u-1">
+							<button type="submit" class="pure-input-1  	pure-button pure-button-primary">Go</button>
+						</div>
+						<!-- </fieldset> -->
+					</form>
+					<div class="pure-menu pure-menu-horizontal"  style="border-bottom:6px solid pink" >
+						<ul style="padding-left:0">
+							{% for item in menus %}
+							<li class="pure-menu-item"><a href="{{ item.url }}" class="pure-menu-link">{{ item.text }}</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+					{% load wiki_tags %}
+					{% wikihome_footer %}
+				</div>
+			
+			</div>
+			
+			
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+{% endblock %}
+
